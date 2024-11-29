@@ -1,7 +1,8 @@
 import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Web3ReactProvider } from '@web3-react/core';
-import { ethers } from 'ethers';
+import { Web3Provider } from '@ethersproject/providers';
+import { APP_CONFIG } from '../utils/constants';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -13,8 +14,10 @@ const queryClient = new QueryClient({
   },
 });
 
-function getLibrary(provider: any) {
-  return new ethers.BrowserProvider(provider);
+function getLibrary(provider: any): Web3Provider {
+  const library = new Web3Provider(provider);
+  library.pollingInterval = 12000;
+  return library;
 }
 
 export const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => {
